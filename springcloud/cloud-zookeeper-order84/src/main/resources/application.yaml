@@ -1,0 +1,8 @@
+server:
+  port: 84
+spring:
+  application:
+    name: cloud-zookeeper-order
+  cloud:
+    zookeeper:
+      connect-string: 172.17.143.131:2181,172.17.143.132:2181,172.17.143.133:2181
