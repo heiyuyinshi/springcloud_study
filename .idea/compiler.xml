@@ -18,6 +18,7 @@
         <module name="cloud-stream-rabbitMQ-consumer8802" />
         <module name="cloud-zookeeper-payment8004" />
         <module name="cloud-consumer-feign-hystrix-order80" />
+        <module name="cloudalibba-provider-payment9011" />
         <module name="cloud-consumer-hystrix-dashboard9001" />
         <module name="cloud-config-center-3344" />
         <module name="cloud-gateway-gateway9527" />
@@ -48,6 +49,7 @@
       <module name="cloud-stream-rabbitMQ-provider8801" target="8" />
       <module name="cloud-zookeeper-order84" target="8" />
       <module name="cloud-zookeeper-payment8004" target="8" />
+      <module name="cloudalibba-provider-payment9011" target="8" />
       <module name="springcloud" target="8" />
     </bytecodeTargetLevel>
   </component>

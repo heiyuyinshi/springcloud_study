@@ -1,3 +1,6 @@
+[TOC]
+
+
 # 1. springcloud基础
 
 ## 1.1 概述
@@ -2273,11 +2276,66 @@ pom内容
 
 3. 运行成功，访问localhost:8848/nacos，默认账号密码为nacos
 
-### 服务注册
+### 服务提供者注册
 
 使用手册：[Spring Cloud Alibaba Reference Documentation (spring-cloud-alibaba-group.github.io)](https://spring-cloud-alibaba-group.github.io/github-pages/hoxton/en-us/index.html)
 
-1. 新建module，cloudalibba-provider-payment9001
+1. 新建module，cloudalibba-provider-payment9011
+2. pom
+
+```xml
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+```
+
+3. yaml
+
+```yaml
+server:
+  port: 9011
+
+spring:
+  application:
+    name: nacos-payment-provider
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 # 配置nacos地址
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+```
+
+4. 主启动类
+
+```java
+@SpringBootApplication
+@EnableDiscoveryClient
+public class PaymentMain9001 {
+    public static void main(String[] args) {
+        SpringApplication.run(PaymentMain9001.class);
+    }
+}
+```
+
+5. 业务类
+
+```java
+@RestController
+public class PaymentController {
+    @Value("${server.port}")
+    private String serverPort;
+    
+    @GetMapping(value = "/payment/nacos/{id}")
+    public String getPayment(@PathVariable("id") Integer id){
+        return "nacos discovery, server port = " + serverPort + "\t id = " + id;
+    }
+}
+```
 
 
 

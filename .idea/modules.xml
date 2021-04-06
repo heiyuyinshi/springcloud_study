@@ -21,6 +21,7 @@
       <module fileurl="file://$PROJECT_DIR$/springcloud/cloud-stream-rabbitMQ-provider8801/cloud-stream-rabbitMQ-provider8801.iml" filepath="$PROJECT_DIR$/springcloud/cloud-stream-rabbitMQ-provider8801/cloud-stream-rabbitMQ-provider8801.iml" />
       <module fileurl="file://$PROJECT_DIR$/springcloud/cloud-zookeeper-order84/cloud-zookeeper-order84.iml" filepath="$PROJECT_DIR$/springcloud/cloud-zookeeper-order84/cloud-zookeeper-order84.iml" />
       <module fileurl="file://$PROJECT_DIR$/springcloud/cloud-zookeeper-payment8004/cloud-zookeeper-payment8004.iml" filepath="$PROJECT_DIR$/springcloud/cloud-zookeeper-payment8004/cloud-zookeeper-payment8004.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcloud/cloudalibba-provider-payment9011/cloudalibba-provider-payment9011.iml" filepath="$PROJECT_DIR$/springcloud/cloudalibba-provider-payment9011/cloudalibba-provider-payment9011.iml" />
       <module fileurl="file://$PROJECT_DIR$/springcloud/springcloud.iml" filepath="$PROJECT_DIR$/springcloud/springcloud.iml" />
     </modules>
   </component>
