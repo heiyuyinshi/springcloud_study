@@ -2337,6 +2337,228 @@ public class PaymentController {
 }
 ```
 
+### 服务消费者注册
+
+1. 创建工程
+2. pom，与服务提供者相同
+3. yaml
+
+```yaml
+server:
+  port: 83
+
+spring:
+  application:
+    name: nacos-order-consumner
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+
+# 消费者将要去访问的微服务名称，可写可不写  
+service-url:
+  nacos-user-service: http://nacos-payment-provider
+```
+
+4. 主启动
+5. 业务代码
+
+restTemplate加入bean
+
+```java
+@Configuration
+public class ApplicationContextConfig {
+    @Bean
+    @LoadBalanced
+    public RestTemplate getRestTemplate(){
+        return new RestTemplate();
+    }
+}
+```
+
+controller
+
+```java
+@RestController
+@Slf4j
+public class OrderController {
+    @Value("${service-url.nacos-user-service}")
+    private String serviceURL;
+
+    @Resource
+    private RestTemplate restTemplate;
+
+    @GetMapping(value = "/order/{id}")
+    public String order(@PathVariable("id") Integer id){
+        return restTemplate.getForObject(serviceURL+"/payment/nacos/" + id, String.class);
+    }
+}
+```
+
+### 服务中心对比
+
+nacos支持模式可以在AP和CP之间切换
+
+C：数据一致性，要求所有节点在同一时间看到的数据是一致的
+
+A：所有的请求都会收到响应
+
+服务切换
+
+`curl -X PUT '$NACOS_SERVER:8848/nacos/v1/ns/operator/switches?entry=serverMode&value=CP'`
+
+### nacos作为服务配置中心-基础配置
+
+1. 新建工程：cloudalibaba-config-nacos-client3377
+2. pom
+
+```xml
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+```
+
+3. yaml
+
+bootstrap.yaml
+
+```yaml
+server:
+  port: 3377
+spring:
+  application:
+    name: nacos-config-client
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml # 指定配置文件
+
+```
+application.yml
+```yaml
+spring:
+  profiles:
+    active: dev # 表示开发环境
+```
+
+4. 主启动类
+5. 业务类
+
+```java
+@RestController
+@RefreshScope //支持nacos动态刷新
+public class ConfigClientController {
+    @Value("${config.info}")
+    private String configInfo;
+
+    @GetMapping(value = "/config/info")
+    public String getConfigInfo(){
+        return configInfo;
+    }
+}
+```
+
+在nacos中添加配置信息
+
+data-id匹配规则
+
+${prefix}-${spring.profiles.active}.${file-extension}
+
+* `prefix` 默认为 `spring.application.name` 的值，也可以通过配置项 `spring.cloud.nacos.config.prefix`来配置。
+* `spring.profiles.active` 即为当前环境对应的 profile，详情可以参考 [Spring Boot文档](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-profiles.html#boot-features-profiles)。 **注意：当 `spring.profiles.active` 为空时，对应的连接符 `-` 也将不存在，dataId 的拼接格式变成 `${prefix}.${file-extension}`**
+* `file-exetension` 为配置内容的数据格式，可以通过配置项 `spring.cloud.nacos.config.file-extension` 来配置。目前只支持 `properties` 和 `yaml` 类型。
+
+按以上配置读取的文件为nacos-config-client-dev.yaml
+
+### 分类配置
+
+nacos命名空间分组和dataID关系
+
+Namespace+Group+dataID
+
+namespace用于区分部署环境，group和dataID区分两个目标对象
+
+group可以把不同微服务划分到同一环境
+
+默认情况：namespace=public，group=DEFAULT_GROUP，默认cluster为DEFAULT
+
+更改group
+
+```yaml
+server:
+  port: 3377
+spring:
+  application:
+    name: nacos-config-client
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml # 指定配置文件
+        group: TEST_GROUP # 指定组
+```
+
+更改namespace
+
+```yaml
+server:
+  port: 3377
+spring:
+  application:
+    name: nacos-config-client
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml # 指定配置文件
+        namespace: 8a0435c4-b7c6-41d7-8b59-2be87b9136c2 # 命名空间id
+```
+
+### nacos集群和持久化配置
+
+集群结构
+
+![deployDnsVipMode.jpg](springcloud学习笔记.assets/deployDnsVipMode.jpg)
+
+请求顺序：
+
+请求——》nginx集群——》nacos集群——》MySQL集群
+
+nacos采用集中式存储的方式支持集群化部署，目前只支持MySQL存储
+
+nacos默认使用derby数据库，但集群条件下无法满足要求，需要切换为MySQL
+
+- 1.安装数据库，版本要求：5.6.5+
+- 2.初始化mysql数据库，数据库初始化文件：nacos-mysql.sql
+- 3.修改conf/application.properties文件，增加支持mysql数据源配置（目前只支持mysql），添加mysql数据源的url、用户名和密码。
+
+```properties
+spring.datasource.platform=mysql
+
+db.num=1
+db.url.0=jdbc:mysql://11.162.196.16:3306/nacos_devtest?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true
+db.user=nacos_devtest
+db.password=youdontknow
+```
+
+
+
+
+
+
+
 
 
 

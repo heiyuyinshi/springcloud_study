@@ -39,7 +39,13 @@
     <file url="file://$PROJECT_DIR$/springcloud/cloud-zookeeper-order84/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud/cloud-zookeeper-payment8004/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud/cloud-zookeeper-payment8004/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud/cloudalibaba-config-nacos-client3377/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud/cloudalibaba-config-nacos-client3377/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud/cloudalibaba-consumer-order83/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud/cloudalibaba-consumer-order83/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud/cloudalibba-provider-payment9011/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/springcloud/cloudalibba-provider-payment9011/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud/cloudalibba-provider-payment9012/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/springcloud/cloudalibba-provider-payment9012/src/main/resources" charset="UTF-8" />
   </component>
 </project>

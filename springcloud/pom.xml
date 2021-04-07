@@ -27,7 +27,10 @@
         <module>cloud-stream-rabbitMQ-provider8801</module>
         <module>cloud-stream-rabbitMQ-consumer8802</module>
         <module>cloud-stream-rabbitMQ-consumer8803</module>
-        <module>cloudalibba-provider-payment9001</module>
+        <module>cloudalibba-provider-payment9011</module>
+        <module>cloudalibba-provider-payment9012</module>
+        <module>cloudalibaba-consumer-order83</module>
+        <module>cloudalibaba-config-nacos-client3377</module>
     </modules>
     <packaging>pom</packaging>
 
